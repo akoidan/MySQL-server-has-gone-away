@@ -2,8 +2,11 @@
 https://stackoverflow.com/a/60894948/3872976
 """
 
+import logging
+
 from django.db.backends.mysql import base
 
+logger = logging.getLogger('mysql_server_has_gone_away')
 
 def check_mysql_gone_away(db_wrapper):
     def decorate(f):
@@ -11,6 +14,7 @@ def check_mysql_gone_away(db_wrapper):
             try:
                 return f(self, query, args)
             except (base.Database.OperationalError, base.Database.InterfaceError) as e:
+                logger.warn("MySQL server has gone away. Rerunning query: %s", query)
                 if 'MySQL server has gone away' in str(e):
                     db_wrapper.connection.close()
                     db_wrapper.connect()
