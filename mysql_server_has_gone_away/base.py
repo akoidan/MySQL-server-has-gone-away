@@ -15,7 +15,10 @@ def check_mysql_gone_away(db_wrapper):
                 return f(self, query, args)
             except (base.Database.OperationalError, base.Database.InterfaceError) as e:
                 logger.warn("MySQL server has gone away. Rerunning query: %s", query)
-                if 'MySQL server has gone away' in str(e):
+                if (
+                    'MySQL server has gone away' in str(e) or
+                    'Lost connection to MySQL server during query' in str(e)
+                ):
                     db_wrapper.connection.close()
                     db_wrapper.connect()
                     self.cursor = db_wrapper.connection.cursor()
