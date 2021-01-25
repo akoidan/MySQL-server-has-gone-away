@@ -4,9 +4,11 @@ This repository solves issue where database connection inside of django overlive
 
 
 ## How to use:
-1. pip install `mysql_server_has_gone_away`
+1. For Django 1.x and 2.x use `pip install mysql_server_has_gone_away==1.0.0`
 
-2. Put this engine into Django `settings.py`:
+1. For django 3.x use `pip install mysql_server_has_gone_away==2.0.0`
+
+1. Put this engine into Django `settings.py`:
 
 ```python
 DATABASES = {
